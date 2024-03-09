@@ -2,15 +2,15 @@ import React, { useState } from "react";
 import Header from "./header";
 import AddIcon from "@mui/icons-material/Add";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { v4 as uuidv4 } from "uuid"; 
-import { EditorState, convertToRaw, convertFromRaw } from 'draft-js';
-import { Editor } from 'react-draft-wysiwyg';
-import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
+import { v4 as uuidv4 } from "uuid";
+import { EditorState, convertToRaw, convertFromRaw } from "draft-js";
+import { Editor } from "react-draft-wysiwyg";
+import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 
 function Dashboard() {
   const [boxes, setBoxes] = useState([]);
   const [selectedBox, setSelectedBox] = useState(null);
-  const [editorState, setEditorState] = useState(EditorState.createEmpty()); // State for rich text editor
+  const [editorState, setEditorState] = useState(EditorState.createEmpty());
   const [options, setOptions] = useState(["", "", "", ""]);
   const [correctOption, setCorrectOption] = useState(null);
 
@@ -32,13 +32,15 @@ function Dashboard() {
     setSelectedBox(id);
     const selected = boxes.find((box) => box.id === id) || {};
     const { question: rawQuestion } = selected;
-  
+
     if (rawQuestion) {
       try {
         const parsedQuestion = JSON.parse(rawQuestion);
-        setEditorState(EditorState.createWithContent(convertFromRaw(parsedQuestion)));
+        setEditorState(
+          EditorState.createWithContent(convertFromRaw(parsedQuestion))
+        );
       } catch (error) {
-        console.error('Error parsing question JSON:', error);
+        console.error("Error parsing question JSON:", error);
         setEditorState(EditorState.createEmpty());
       }
     } else {
@@ -54,7 +56,9 @@ function Dashboard() {
       if (box.id === selectedBox) {
         return {
           ...box,
-          question: JSON.stringify(convertToRaw(editorState.getCurrentContent())), // Convert Draft.js editor content to JSON string for saving
+          question: JSON.stringify(
+            convertToRaw(editorState.getCurrentContent())
+          ), // Convert Draft.js editor content to JSON string for saving
           options,
           correctOption,
         };
@@ -82,10 +86,11 @@ function Dashboard() {
               className="border-2 border-gray-400 text-gray-400 text-2xl  w-full min-h-[120px] hover:cursor-pointer flex items-center justify-center rounded-lg pt-2 relative"
               onClick={() => handleEditBox(box.id)}
             >
+              {/* {  console.log(box)} */}
               <span className="absolute top-0 left-0 ml-2 mt-2 text-xs text-gray-500">
                 Question {boxes.indexOf(box) + 1}
               </span>
-              <div className="px-2 py-1">{box.question}</div>
+              <div className="px-2 py-1">{box.question} </div>
               {selectedBox === box.id && (
                 <button
                   className="absolute top-0 right-0 mr-2 mt-2 text-gray-500 hover:text-red-500"
@@ -108,7 +113,7 @@ function Dashboard() {
           {selectedBox !== null && (
             <div>
               <label className="block mb-2">Question</label>
-              <div className="bg-[#521A3C] text-white md:p-3 lg:p-6 rounded-md" > 
+              <div className="bg-[#521A3C] text-white md:p-3 lg:p-6 rounded-md">
                 <Editor
                   editorState={editorState}
                   onEditorStateChange={setEditorState}
