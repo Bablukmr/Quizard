@@ -3,11 +3,14 @@ import Header from "./header";
 import AddIcon from "@mui/icons-material/Add";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { v4 as uuidv4 } from "uuid"; 
+import { EditorState, convertToRaw, convertFromRaw } from 'draft-js';
+import { Editor } from 'react-draft-wysiwyg';
+import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 
 function Dashboard() {
   const [boxes, setBoxes] = useState([]);
   const [selectedBox, setSelectedBox] = useState(null);
-  const [question, setQuestion] = useState("");
+  const [editorState, setEditorState] = useState(EditorState.createEmpty()); // State for rich text editor
   const [options, setOptions] = useState(["", "", "", ""]);
   const [correctOption, setCorrectOption] = useState(null);
 
@@ -19,7 +22,7 @@ function Dashboard() {
     setBoxes(boxes.filter((box) => box.id !== id));
     if (selectedBox === id) {
       setSelectedBox(null);
-      setQuestion("");
+      setEditorState(EditorState.createEmpty());
       setOptions(["", "", "", ""]);
       setCorrectOption(null);
     }
@@ -28,7 +31,20 @@ function Dashboard() {
   const handleEditBox = (id) => {
     setSelectedBox(id);
     const selected = boxes.find((box) => box.id === id) || {};
-    setQuestion(selected.question || "");
+    const { question: rawQuestion } = selected;
+  
+    if (rawQuestion) {
+      try {
+        const parsedQuestion = JSON.parse(rawQuestion);
+        setEditorState(EditorState.createWithContent(convertFromRaw(parsedQuestion)));
+      } catch (error) {
+        console.error('Error parsing question JSON:', error);
+        setEditorState(EditorState.createEmpty());
+      }
+    } else {
+      setEditorState(EditorState.createEmpty());
+    }
+
     setOptions([...(selected.options || ["", "", "", ""])]);
     setCorrectOption(selected.correctOption || null);
   };
@@ -38,7 +54,7 @@ function Dashboard() {
       if (box.id === selectedBox) {
         return {
           ...box,
-          question,
+          question: JSON.stringify(convertToRaw(editorState.getCurrentContent())), // Convert Draft.js editor content to JSON string for saving
           options,
           correctOption,
         };
@@ -47,7 +63,7 @@ function Dashboard() {
     });
     setBoxes(updatedBoxes);
     setSelectedBox(null);
-    setQuestion("");
+    setEditorState(EditorState.createEmpty());
     setOptions(["", "", "", ""]);
     setCorrectOption(null);
   };
@@ -88,17 +104,19 @@ function Dashboard() {
             <AddIcon />
           </div>
         </div>
-        <div className="w-[85%] h-full flex items-center justify-center">
+        <div className="w-[85%] h-full flex items-center justify-center ">
           {selectedBox !== null && (
             <div>
               <label className="block mb-2">Question</label>
-              <input
-                value={question}
-                onChange={(e) => setQuestion(e.target.value)}
-                className="border border-gray-400 p-2 mb-4 w-full"
-              />
+              <div className="bg-[#521A3C] text-white md:p-3 lg:p-6 rounded-md" > 
+                <Editor
+                  editorState={editorState}
+                  onEditorStateChange={setEditorState}
+                  placeholder="Type your question here..."
+                />
+              </div>
               {options.map((option, index) => (
-                <div key={index} className="mb-4">
+                <div key={index} className="mb-4 ">
                   <label className="block mb-2">{`Option ${index + 1}`}</label>
                   <div className="flex items-center mb-2">
                     <input
@@ -110,7 +128,7 @@ function Dashboard() {
                           )
                         )
                       }
-                      className="border border-gray-400 p-2 flex-grow mr-2"
+                      className="border border-gray-400 p-2 flex-grow mr-2 "
                     />
                     <input
                       type="radio"
