@@ -2,7 +2,7 @@ import SaveIcon from "@mui/icons-material/Save";
 import ArrowLeftIcon from "@mui/icons-material/ArrowLeft";
 import React from "react";
 
-function Header() {
+function Header({ handleSendData }) {
   return (
     <div>
       <div className="flex h-[70px] justify-between px-5 py-3 border-b-2">
@@ -14,7 +14,10 @@ function Header() {
             <ArrowLeftIcon />
             Preview
           </button>
-          <button className="px-5 py-[6px] flex items-center justify-center gap-1 bg-blue-800 text-white rounded-md hover:shadow-lg">
+          <button
+            onClick={handleSendData}
+            className="px-5 py-[6px] flex items-center justify-center gap-1 bg-blue-800 text-white rounded-md hover:shadow-lg"
+          >
             <p className=" text-sm">
               <SaveIcon style={{ fontSize: 18 }} />
             </p>
