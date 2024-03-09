@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Header from "./header";
 import AddIcon from "@mui/icons-material/Add";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { v4 as uuidv4 } from "uuid"; // Import UUID for generating unique IDs
+import { v4 as uuidv4 } from "uuid"; 
 
 function Dashboard() {
   const [boxes, setBoxes] = useState([]);
