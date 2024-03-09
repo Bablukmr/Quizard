@@ -83,7 +83,7 @@ function Dashboard() {
   return (
     <div className="m-0 p-0">
       <div>
-        <Header handleSendData={handleSendData}/>
+        <Header handleSendData={handleSendData} />
       </div>
 
       <div className="w-[100vw] mt-[5px] h-[calc(100vh-70px)] flex items-center justify-center">
@@ -120,12 +120,6 @@ function Dashboard() {
           >
             <AddIcon />
           </div>
-          {/* <button
-            className="bg-blue-800 px-4 py-2 text-white"
-            onClick={handleSendData}
-          >
-            Send
-          </button> */}
         </div>
         <div className="w-[85%] h-full flex items-center justify-center ">
           {selectedBox !== null && (
