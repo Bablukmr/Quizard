@@ -87,11 +87,11 @@ function Dashboard() {
       </div>
 
       <div className="w-[100vw] mt-[5px] h-[calc(100vh-70px)] flex items-center justify-center">
-        <div className="w-[15%] h-full flex items-start flex-col overflow-y-auto border-r-2 gap-4 px-5 pt-4">
+        <div className="md:w-[15%] w-[100vw] h-[120px] bg-white fixed md:static bottom-0 md:h-full  flex-row md:flex-col flex items-start overflow-scroll border-r-2 gap-4 px-5 pt-4">
           {boxes.map((box) => (
             <div
               key={box.id}
-              className="border-2 border-gray-400 text-gray-400 text-2xl  w-full min-h-[120px] hover:cursor-pointer flex items-center justify-center rounded-lg pt-2 relative"
+              className="border-2  border-gray-400 text-gray-400 text-2xl min-h-[100px] min-w-[100px] md:w-full md:min-h-[120px] hover:cursor-pointer flex items-center justify-center rounded-lg pt-2 relative "
               onClick={() => handleEditBox(box.id)}
             >
               <span className="absolute top-0 left-0 ml-2 mt-2 text-xs text-gray-500">
