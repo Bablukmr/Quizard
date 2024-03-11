@@ -10,7 +10,7 @@ function Header({ handleSendData }) {
           <h1 className="text-gray-600 text-2xl font-bold">Quizard</h1>
         </div>
         <div className="flex items-center justify-center gap-x-3">
-          <button className="px-5 py-[6px] bg-slate-200 rounded-md">
+          <button className="px-5 py-[6px] bg-slate-200 rounded-md hidden md:inline-flex">
             <ArrowLeftIcon />
             Preview
           </button>

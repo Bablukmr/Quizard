@@ -91,17 +91,17 @@ function Dashboard() {
           {boxes.map((box) => (
             <div
               key={box.id}
-              className="border-2  border-gray-400 text-gray-400 text-2xl min-h-[100px] min-w-[100px] md:w-full md:min-h-[120px] hover:cursor-pointer flex items-center justify-center rounded-lg pt-2 relative "
+              className="border-2 border-gray-400 text-gray-400 text-2xl min-h-[100px] min-w-[100px] md:w-full md:min-h-[120px] hover:cursor-pointer flex items-center justify-center rounded-lg pt-2 relative"
               onClick={() => handleEditBox(box.id)}
             >
               <span className="absolute top-0 left-0 ml-2 mt-2 text-xs text-gray-500">
                 Question {boxes.indexOf(box) + 1}
               </span>
-              <div className="px-2 py-1">
+              <div className="px-2 py-1 text-sm flex-wrap">
                 {box.question &&
                   JSON.parse(box.question)
                     .blocks.map((block) => block.text)
-                    .join("")}
+                    .join("").slice(0,50)}
               </div>
               {selectedBox === box.id && (
                 <button
